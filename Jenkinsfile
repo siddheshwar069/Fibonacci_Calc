@@ -72,6 +72,10 @@ pipeline {
                 sh '''
                 sleep 300
                 docker compose down
+                echo removing all the conatiners, images and volumes
+                docker system prune -f
+                docker rmi -f $(docker images -q) -f
+                docker system prune -a --volumes -f
             ''' 
             }
         }
