@@ -1,25 +1,21 @@
-version: '3'
+version: "3"
 services:
   postgres:
-    image: 'postgres:latest'
+    image: "postgres:latest"
     environment:
       - POSTGRES_PASSWORD=postgres_password
   redis:
-    image: 'redis:latest'
+    image: "redis:latest"
   nginx:
     depends_on:
       - api
       - client
     restart: always
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./nginx
+    image: siddheshwar069/nginx:latest
     ports:
-      - '3050:80'
+      - "3050:80"
   api:
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./server
+    image: siddheshwar069/server:latest
     volumes:
       - /app/node_modules
       - ./server:/app
@@ -34,16 +30,12 @@ services:
   client:
     environment:
       - WDS_SOCKET_PORT=0
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./client
+    image: siddheshwar069/client:latest
     volumes:
       - /app/node_modules
       - ./client:/app
   worker:
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./worker
+    image: siddheshwar069/worker:latest
     volumes:
       - /app/node_modules
       - ./worker:/app
