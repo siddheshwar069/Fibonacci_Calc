@@ -58,6 +58,9 @@ pipeline {
            steps{
             sh '''
                 echo "building docker compose file and starting it"
+                docker system prune -f
+                docker rmi -f $(docker images -q) -f
+                docker system prune -a --volumes -f
                 docker compose up --build -d
                 echo compose is up and running
             '''
