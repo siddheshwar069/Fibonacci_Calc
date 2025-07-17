@@ -65,10 +65,12 @@ pipeline {
         }
 
         stage("compose_down"){
-            sh '''
+            steps{
+                sh '''
                 sleep 300
                 docker compose down
             ''' 
+            }
         }
     }
 
