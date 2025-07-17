@@ -28,7 +28,7 @@ pipeline {
             }
         }
 
-        /*stage("docker_login") {
+        stage("docker_login") {
             steps {
                 echo "Logging in to Dockerhub..."
                 withCredentials([usernamePassword(
@@ -40,8 +40,8 @@ pipeline {
                     sh "echo successfully logged in to Docker..."
                 }
             }
-        }*/
-        /*stage("push_docker"){
+        }
+        stage("push_docker"){
             steps{
             sh '''
                 echo pushing images to dockerhub
@@ -52,23 +52,30 @@ pipeline {
                 echo images successfully pushed to docker
             '''
             }
-        }*/
+        }
 
         stage('compose_up'){
            steps{
             sh '''
                 echo "building docker compose file and starting it"
-                docker compose up --build
+                docker compose up --build -d
                 echo compose is up and running
             '''
            }
         }
+
+        stage("compose_down"){
+            sh '''
+                sleep 300
+                docker compose down
+            ''' 
+        }
     }
 
-    /*post {
+    post {
         always {
             echo 'Logging out from Docker...'
             sh 'docker logout || true'
         }
-    }*/
+    }
 }
